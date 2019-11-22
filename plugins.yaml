@@ -1,0 +1,11 @@
+plugins:
+  johnmcollier/codewind-che-plugin:
+  - size
+  - trigger
+  - approve
+  - cat
+  - dog
+  - goose
+  - label
+  - lgtm
+  - assign

@@ -1,0 +1,39 @@
+prowjob_namespace: default
+pod_namespace: test-pods
+plank:
+  default_decoration_config:
+    utility_images: # using the tag we identified above
+      clonerefs: "gcr.io/k8s-prow/clonerefs:v20190619-25afbb545"
+      initupload: "gcr.io/k8s-prow/initupload:v20190619-25afbb545"
+      entrypoint: "gcr.io/k8s-prow/entrypoint:v20190619-25afbb545"
+      sidecar: "gcr.io/k8s-prow/sidecar:v20190619-25afbb545"
+    gcs_configuration:
+      bucket: codewind-bucket # the bucket we just made
+      path_strategy: explicit
+    gcs_credentials_secret: gcs-credentials # the secret we just made
+periodics:
+- interval: 10m
+  name: echo-test
+  decorate: false
+  spec:
+    containers:
+    - image: alpine
+      command: ["/bin/date"]
+postsubmits:
+  johnmcollier/codewind-che-plugin:
+  - name: test-postsubmit
+    decorate: true
+    spec:
+      containers:
+      - image: alpine
+        command: ["/bin/ls"]
+presubmits:
+  johnmcollier/codewind-che-plugin:
+  - name: test-presubmit
+    decorate: true
+    always_run: true
+    skip_report: false
+    spec:
+      containers:
+      - image: alpine
+        command: ["/bin/ls"]
